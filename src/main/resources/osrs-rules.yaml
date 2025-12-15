@@ -1,0 +1,1487 @@
+# ULTIMATE OSRS FIELD DETECTION RULES
+# Maximized for detecting ALL 54+ fields with aggressive thresholds
+# Aligned with hooks.json field names and obfuscated classes
+
+thresholdDefault: 0.60
+
+classRules:
+
+  # CLIENT CLASS - Massive static field container (MUST BE FIRST FOR PRIORITY)
+  - id: Client
+    type: class
+    threshold: 0.50
+    minFieldDescCounts:
+      "I": 120
+      "[I": 30
+    signals:
+      - kind: minLdcStrings
+        min: 600
+        weight: 1.0
+      - kind: minLdcNumbers
+        min: 15000
+        weight: 1.0
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 800
+        weight: 1.0
+
+  # ACTOR - Base class for Player and NPC (obf: "of")
+  - id: Actor
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 70
+      "[I": 10
+      "Ljava/lang/String;": 5
+    signals:
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 10
+        weight: 0.6
+      - kind: minLdcNumbers
+        min: 1500
+        weight: 0.4
+
+  # PLAYER - Extends Actor (obf: "cl")
+  - id: Player
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 4
+      "Ljava/lang/String;": 1
+    signals:
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 3
+        weight: 0.6
+      - kind: minLdcStrings
+        min: 1
+        weight: 0.4
+
+  # NPC - Extends Actor (obf: "bj")
+  - id: NPC
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 2
+    signals:
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD * * * *"
+        min: 2
+        weight: 0.6
+      - kind: minLdcNumbers
+        min: 3
+        weight: 0.4
+
+  # NPCDefinition (obf: "dz")
+  - id: NPCDefinition
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 7
+      "[Ljava/lang/String;": 1
+      "Ljava/lang/String;": 1
+    signals:
+      - kind: minLdcStrings
+        min: 15
+        weight: 0.5
+      - kind: minLdcNumbers
+        min: 800
+        weight: 0.5
+
+  # ItemDefinition (obf: "hi")
+  - id: ItemDefinition
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 8
+      "[Ljava/lang/String;": 1
+    signals:
+      - kind: minLdcStrings
+        min: 2
+        weight: 0.5
+      - kind: minLdcNumbers
+        min: 10
+        weight: 0.5
+
+  # ObjectDefinition (obf: "hu")
+  - id: ObjectDefinition
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 8
+      "[Ljava/lang/String;": 1
+    signals:
+      - kind: minLdcStrings
+        min: 1
+        weight: 0.5
+      - kind: minLdcNumbers
+        min: 8
+        weight: 0.5
+
+  # Tile (obf: "cq")
+  - id: Tile
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 3
+    signals:
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 2
+        weight: 0.6
+      - kind: minLdcNumbers
+        min: 3
+        weight: 0.4
+
+  # World (obf: "al")
+  - id: World
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 3
+      "Ljava/lang/String;": 2
+    signals:
+      - kind: minLdcStrings
+        min: 1
+        weight: 0.6
+      - kind: minLdcNumbers
+        min: 2
+        weight: 0.4
+
+  # GrandExchangeOffer (obf: "bh")
+  - id: GrandExchangeOffer
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 4
+    signals:
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 3
+        weight: 0.6
+      - kind: minLdcNumbers
+        min: 3
+        weight: 0.4
+
+  # Node (obf: "bm")
+  - id: Node
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "J": 1
+    signals:
+      - kind: minLdcNumbers
+        min: 1
+        weight: 0.6
+
+  # Scene (obf: "dd")
+  - id: Scene
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "[[[I": 1
+    signals:
+      - kind: minLdcNumbers
+        min: 5
+        weight: 0.6
+
+  # Cache (obf: "ab")
+  - id: Cache
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "I": 2
+    signals:
+      - kind: minLdcNumbers
+        min: 1
+        weight: 0.6
+
+  # MouseHandler (obf: "bp")
+  - id: MouseHandler
+    type: class
+    threshold: 0.60
+    interfaces:
+      - "java/awt/event/MouseListener"
+    minFieldDescCounts:
+      "I": 3
+    signals:
+      - kind: minLdcNumbers
+        min: 2
+        weight: 0.6
+
+  # Font (obf: "bg")
+  - id: Font
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "[I": 2
+      "I": 2
+    signals:
+      - kind: minLdcStrings
+        min: 1
+        weight: 0.5
+      - kind: minLdcNumbers
+        min: 5
+        weight: 0.5
+
+  # Sprite (obf: "am")
+  - id: Sprite
+    type: class
+    threshold: 0.60
+    minFieldDescCounts:
+      "[I": 1
+      "I": 3
+    signals:
+      - kind: minLdcNumbers
+        min: 3
+        weight: 0.6
+
+
+# ============================================================
+# FIELD-LEVEL RULES - THE ULTIMATE 54 FIELD DETECTION
+# ============================================================
+
+fieldRules:
+
+  # ==================== CLIENT STATIC FIELDS ====================
+
+  # gameState (client.mw:I) - Game state indicator (0=login, 25=logged in, etc)
+  - id: Client.gameState
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 30
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 5
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC * * * *"
+        min: 10
+        weight: 0.2
+
+  # loginState (client.ic:I) - Login screen state
+  - id: Client.loginState
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 15
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 3
+        weight: 0.3
+      - kind: writeMin
+        min: 5
+        weight: 0.2
+
+  # baseX (client.fa:I) - World base X coordinate
+  - id: Client.baseX
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 2
+        weight: 0.2
+
+  # baseY (client.fi:I) - World base Y coordinate
+  - id: Client.baseY
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 2
+        weight: 0.2
+
+  # plane (client.mx:I) - Current floor level (0-3)
+  - id: Client.plane
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 20
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 3
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC * * * *"
+        min: 5
+        weight: 0.2
+
+  # energy (client.gm:I) - Run energy percentage
+  - id: Client.energy
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 3
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # weight (client.hv:I) - Player weight
+  - id: Client.weight
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # currentWorld (client.gk:I) - Current world number
+  - id: Client.currentWorld
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 3
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # fps (client.fc:I) - Frames per second
+  - id: Client.fps
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # menuOptionCount (client.fi:I) - Number of right-click menu options
+  - id: Client.menuOptionCount
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 10
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: writeMin
+        min: 5
+        weight: 0.2
+
+  # cameraX (client.fl:I) - Camera X position
+  - id: Client.cameraX
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 2
+        weight: 0.2
+
+  # cameraY (client.ga:I) - Camera Y (height) position
+  - id: Client.cameraY
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 2
+        weight: 0.2
+
+  # cameraZ (client.gd:I) - Camera Z position
+  - id: Client.cameraZ
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 2
+        weight: 0.2
+
+  # cameraPitch (client.fb:I) - Camera pitch/tilt angle
+  - id: Client.cameraPitch
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # cameraYaw (client.gc:I) - Camera yaw/rotation angle
+  - id: Client.cameraYaw
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|* * GETSTATIC LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # viewportWidth (client.hm:I) - Game viewport width
+  - id: Client.viewportWidth
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 3
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # viewportHeight (client.hf:I) - Game viewport height
+  - id: Client.viewportHeight
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 3
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # skillExperiences (client.gl:[I) - Array of skill XP values (23 skills)
+  - id: Client.skillExperiences
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 4
+        weight: 0.6
+      - kind: writeMin
+        min: 2
+        weight: 0.4
+
+  # realSkillLevels (client.gh:[I) - Real skill levels
+  - id: Client.realSkillLevels
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 4
+        weight: 0.6
+      - kind: writeMin
+        min: 2
+        weight: 0.4
+
+  # boostedSkillLevels (client.es:[I) - Boosted/current skill levels
+  - id: Client.boostedSkillLevels
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 4
+        weight: 0.6
+      - kind: writeMin
+        min: 2
+        weight: 0.4
+
+  # varps (client.ov:[I) - Player settings/varbits container
+  - id: Client.varps
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.6
+      - kind: writeMin
+        min: 3
+        weight: 0.4
+
+  # ==================== ACTOR INSTANCE FIELDS ====================
+
+  # actorAnimation (of.bd:I) - Current animation ID
+  - id: Actor.actorAnimation
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 3
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # actorHealthRatio (of.bi:I) - Health bar numerator
+  - id: Actor.actorHealthRatio
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # actorHealthScale (of.br:I) - Health bar denominator
+  - id: Actor.actorHealthScale
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # actorInteracting (of.bt:I) - Index of interacting entity
+  - id: Actor.actorInteracting
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # actorOrientation (of.bw:I) - Facing direction (0-2047)
+  - id: Actor.actorOrientation
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # actorOverheadText (of.ba:Ljava/lang/String;) - Overhead chat text
+  - id: Actor.actorOverheadText
+    ownerTarget: Actor
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # actorPathLength (of.dv:I) - Path queue length
+  - id: Actor.actorPathLength
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # actorPoseAnimation (of.ca:I) - Idle/walk/run animation
+  - id: Actor.actorPoseAnimation
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # actorLocalX (of.ce:I) - Local X coordinate
+  - id: Actor.actorLocalX
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # actorLocalY (of.ch:I) - Local Y coordinate
+  - id: Actor.actorLocalY
+    ownerTarget: Actor
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 2
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # ==================== PLAYER INSTANCE FIELDS ====================
+
+  # playerName (cl.ac:Ljava/lang/String;) - Player name
+  - id: Player.playerName
+    ownerTarget: Player
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # playerCombatLevel (cl.ab:I) - Combat level
+  - id: Player.playerCombatLevel
+    ownerTarget: Player
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # playerTeam (cl.as:I) - Team number (for minigames)
+  - id: Player.playerTeam
+    ownerTarget: Player
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+
+  # playerSkullIcon (cl.ai:I) - Skull icon type
+  - id: Player.playerSkullIcon
+    ownerTarget: Player
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+
+  # playerPrayerIcon (cl.ad:I) - Prayer icon type
+  - id: Player.playerPrayerIcon
+    ownerTarget: Player
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+
+  # ==================== NPC DEFINITION FIELDS ====================
+
+  # npcDefinitionName (dz.name:Ljava/lang/String;) - NPC name
+  - id: NPCDefinition.npcDefinitionName
+    ownerTarget: NPCDefinition
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # npcDefinitionId (dz.ai:I) - NPC ID
+  - id: NPCDefinition.npcDefinitionId
+    ownerTarget: NPCDefinition
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # npcDefinitionCombatLevel (dz.ad:I) - NPC combat level
+  - id: NPCDefinition.npcDefinitionCombatLevel
+    ownerTarget: NPCDefinition
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+
+  # npcDefinitionActions (dz.aw:[Ljava/lang/String;) - Right-click actions
+  - id: NPCDefinition.npcDefinitionActions
+    ownerTarget: NPCDefinition
+    desc: "[Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # ==================== ITEM DEFINITION FIELDS ====================
+
+  # itemDefinitionId (bv.ah:I) - Item ID
+  - id: ItemDefinition.itemDefinitionId
+    ownerTarget: ItemDefinition
+    desc: "I"
+    isStatic: false
+    threshold: 0.05
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 1.0
+
+  # itemDefinitionName (bv.af:Ljava/lang/String;) - Item name
+  - id: ItemDefinition.itemDefinitionName
+    ownerTarget: ItemDefinition
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.05
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 1.0
+
+  # itemDefinitionActions (bv.bi:[Ljava/lang/String;) - Item actions
+  - id: ItemDefinition.itemDefinitionActions
+    ownerTarget: ItemDefinition
+    desc: "[Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.05
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 1.0
+
+  # ==================== OBJECT DEFINITION FIELDS ====================
+
+  # objectDefinitionId (hu.cm:I) - Object ID
+  - id: ObjectDefinition.objectDefinitionId
+    ownerTarget: ObjectDefinition
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # objectDefinitionActions (hu.dd:[Ljava/lang/String;) - Object actions
+  - id: ObjectDefinition.objectDefinitionActions
+    ownerTarget: ObjectDefinition
+    desc: "[Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # ==================== TILE FIELDS ====================
+
+  # tileX (cq.ae:I) - Tile X coordinate
+  - id: Tile.tileX
+    ownerTarget: Tile
+    desc: "I"
+    isStatic: false
+    threshold: 0.08
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 1.0
+
+  # tileY (bj.aw:I) - Tile Y coordinate
+  - id: Tile.tileY
+    ownerTarget: Tile
+    desc: "I"
+    isStatic: false
+    threshold: 0.05
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 1.0
+
+  # tilePlane (cq.ac:I) - Tile plane/floor level
+  - id: Tile.tilePlane
+    ownerTarget: Tile
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: fieldPattern
+        value: "I|ALOAD * GETFIELD LDC IMUL * *"
+        min: 1
+        weight: 0.2
+
+  # ==================== GRAND EXCHANGE OFFER FIELDS ====================
+
+  # geOfferItemId (bh.at:I) - Item ID in offer
+  - id: GrandExchangeOffer.geOfferItemId
+    ownerTarget: GrandExchangeOffer
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # geOfferPrice (bh.au:I) - Price per item
+  - id: GrandExchangeOffer.geOfferPrice
+    ownerTarget: GrandExchangeOffer
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # geOfferQuantity (bh.aw:I) - Quantity of items
+  - id: GrandExchangeOffer.geOfferQuantity
+    ownerTarget: GrandExchangeOffer
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # geOfferState (bh.ay:I) - Offer state (pending, completed, etc)
+  - id: GrandExchangeOffer.geOfferState
+    ownerTarget: GrandExchangeOffer
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # ==================== WORLD FIELDS ====================
+
+  # worldId (al.av:I) - World number
+  - id: World.worldId
+    ownerTarget: World
+    desc: "I"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # worldActivity (al.an:Ljava/lang/String;) - World activity string
+  - id: World.worldActivity
+    ownerTarget: World
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # worldAddress (al.at:Ljava/lang/String;) - World IP/address
+  - id: World.worldAddress
+    ownerTarget: World
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # ==================== ADDITIONAL CLIENT FIELDS ====================
+
+  # localPlayer - The local player Actor reference
+  - id: Client.localPlayer
+    ownerTarget: Client
+    desc: "Lof;"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 20
+        weight: 0.6
+      - kind: writeMin
+        min: 2
+        weight: 0.4
+
+  # players - Array of all players in scene
+  - id: Client.players
+    ownerTarget: Client
+    desc: "[Lcl;"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 10
+        weight: 0.6
+      - kind: writeMin
+        min: 3
+        weight: 0.4
+
+  # npcs - Array of all NPCs in scene
+  - id: Client.npcs
+    ownerTarget: Client
+    desc: "[Laq;"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 10
+        weight: 0.6
+      - kind: writeMin
+        min: 3
+        weight: 0.4
+
+  # widgets - 2D array of all UI widgets
+  - id: Client.widgets
+    ownerTarget: Client
+    desc: "[[Ljava/lang/Object;"
+    isStatic: true
+    threshold: 0.45
+    signals:
+      - kind: readMin
+        min: 50
+        weight: 0.7
+      - kind: writeMin
+        min: 5
+        weight: 0.3
+
+  # scene - The scene object containing tiles
+  - id: Client.scene
+    ownerTarget: Client
+    desc: "Ldd;"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # tiles - 3D array of scene tiles [plane][x][y]
+  - id: Scene.tiles
+    ownerTarget: Scene
+    desc: "[[[Lbj;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 10
+        weight: 0.6
+      - kind: writeMin
+        min: 2
+        weight: 0.4
+
+  # ==================== MENU FIELDS ====================
+
+  # menuOpen - Whether the right-click menu is open
+  - id: Client.menuOpen
+    ownerTarget: Client
+    desc: "Z"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 10
+        weight: 0.5
+      - kind: writeMin
+        min: 3
+        weight: 0.5
+
+  # menuX - X position of the menu
+  - id: Client.menuX
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 2
+        weight: 0.2
+
+  # menuY - Y position of the menu
+  - id: Client.menuY
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 2
+        weight: 0.2
+
+  # menuWidth - Width of the menu
+  - id: Client.menuWidth
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 3
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # menuHeight - Height of the menu
+  - id: Client.menuHeight
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 3
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 1
+        weight: 0.2
+
+  # menuOpcodes - Menu action opcodes array
+  - id: Client.menuOpcodes
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 10
+        weight: 0.6
+      - kind: writeMin
+        min: 5
+        weight: 0.4
+
+  # menuParam0 - Menu action first parameter array
+  - id: Client.menuParam0
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.6
+      - kind: writeMin
+        min: 4
+        weight: 0.4
+
+  # menuParam1 - Menu action second parameter array
+  - id: Client.menuParam1
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.6
+      - kind: writeMin
+        min: 4
+        weight: 0.4
+
+  # menuIdentifiers - Menu action identifiers (entity IDs) array
+  - id: Client.menuIdentifiers
+    ownerTarget: Client
+    desc: "[I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.6
+      - kind: writeMin
+        min: 4
+        weight: 0.4
+
+  # menuOptions - Menu option text array (e.g. "Walk here", "Attack")
+  - id: Client.menuOptions
+    ownerTarget: Client
+    desc: "[Ljava/lang/String;"
+    isStatic: true
+    threshold: 0.05
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 1.0
+
+  # menuTargets - Menu target text array
+  - id: Client.menuTargets
+    ownerTarget: Client
+    desc: "[Ljava/lang/String;"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 8
+        weight: 0.6
+      - kind: writeMin
+        min: 4
+        weight: 0.4
+
+  # ==================== INPUT FIELDS ====================
+
+  # mouseX - Current mouse X coordinate
+  - id: Client.mouseX
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 2
+        weight: 0.2
+
+  # mouseY - Current mouse Y coordinate
+  - id: Client.mouseY
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 5
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 1
+        weight: 0.3
+      - kind: writeMin
+        min: 2
+        weight: 0.2
+
+  # gameCycle - Game tick counter
+  - id: Client.gameCycle
+    ownerTarget: Client
+    desc: "I"
+    isStatic: true
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 15
+        weight: 0.5
+      - kind: intMultiplierConstAny
+        min: 3
+        weight: 0.3
+      - kind: writeMin
+        min: 2
+        weight: 0.2
+
+  # ==================== ADDITIONAL INSTANCE FIELDS ====================
+
+  # npcDefinition - NPC's definition reference
+  - id: NPC.npcDefinition
+    ownerTarget: NPC
+    desc: "Ldz;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 2
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # itemDefinitionName - Item name
+  - id: ItemDefinition.itemDefinitionName
+    ownerTarget: ItemDefinition
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+
+  # objectDefinitionName - Object name
+  - id: ObjectDefinition.objectDefinitionName
+    ownerTarget: ObjectDefinition
+    desc: "Ljava/lang/String;"
+    isStatic: false
+    threshold: 0.50
+    signals:
+      - kind: readMin
+        min: 1
+        weight: 0.6
+      - kind: writeMin
+        min: 1
+        weight: 0.4
+

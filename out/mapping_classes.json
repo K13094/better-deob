@@ -1,0 +1,18 @@
+{
+  "Actor" : "of",
+  "Cache" : "ab",
+  "Client" : "client",
+  "Font" : "bg",
+  "GrandExchangeOffer" : "bh",
+  "ItemDefinition" : "bv",
+  "MouseHandler" : "bp",
+  "NPC" : "aq",
+  "NPCDefinition" : "dz",
+  "Node" : "bm",
+  "ObjectDefinition" : "ci",
+  "Player" : "cl",
+  "Scene" : "dd",
+  "Sprite" : "am",
+  "Tile" : "bj",
+  "World" : "al"
+}
